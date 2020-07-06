@@ -20,12 +20,16 @@ using namespace gl;
 #include "cube.hpp"
 
 // #include <imgui.h>
-// // #include <imgui_impl_glfw_gl3.h>
 // #include <imgui_impl_opengl2.h>
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+// #include "imgui.h"
+// #include "imgui_impl_glfw.h"
+// #include "imgui_impl_opengl2.h"
+// #include "imgui_impl_glfw_gl3.h"
+
+#include <imgui.h>
+#include <imgui_impl_glfw_gl3.h>
+
 
 
 //dont load gl bindings from glfw
@@ -148,7 +152,7 @@ bool read_volume(std::string& volume_string){
 }
 
 
-void UpdateImGui()
+void UpdateImGui(GLFWwindow* window)
 {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -180,8 +184,8 @@ void UpdateImGui()
     io.MouseDown[1] = mousePressed[1] || glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) != 0;
 
     // Start the frame
-    // ImGui::NewFrame();
-    ImGui_ImplOpenGL2_NewFrame();
+    ImGui::NewFrame();
+    // ImGui_ImplOpenGL3_NewFrame();
 }
 
 void showGUI(){
@@ -642,8 +646,8 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
 
   g_transfer_fun.init();
 
-  // ImGui_ImplGlfwGL3_Init(g_win.getGLFWwindow(), true);
-  ImGui_ImplOpenGL2_Init(window, true);
+  ImGui_ImplGlfwGL3_Init(window, true);
+  // ImGui_ImplOpenGL2_Init(window, true);
 
 
 }
@@ -654,7 +658,7 @@ ApplicationSolar::~ApplicationSolar() {
   glDeleteVertexArrays(1, &planet_object.vertex_AO);
 }
 
-void ApplicationSolar::render() const {
+void ApplicationSolar::render(GLFWwindow* window) const {
   // bind shader to upload uniforms
   glUseProgram(m_shaders.at("planet").handle);
 
@@ -679,9 +683,9 @@ void ApplicationSolar::render() const {
     io.MouseWheel = 0;
     mousePressed[0] = mousePressed[1] = false;
     glfwPollEvents();
-    UpdateImGui();
+    UpdateImGui(window);
     showGUI();
-    // Rendering
+    // Rendering    
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
     ImGui::Render();
 }

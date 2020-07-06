@@ -38,7 +38,7 @@ class Application {
   // update framebuffer textures
   inline virtual void resizeCallback(unsigned width, unsigned height) {};
   // draw all objects
-  virtual void render() const = 0;
+  virtual void render(GLFWwindow* window) const = 0;
 
  protected:
   void updateUniformLocations();
@@ -62,8 +62,8 @@ class Application {
 template<typename T>
 void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_minor) {  
 
-    window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
-    // GLFWwindow* window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
+    // window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
+    GLFWwindow* window = window_handler::initialize(initial_resolution, ver_major, ver_minor);
     
     std::string resource_path = utils::read_resource_path(argc, argv);
     T* application = new T{resource_path};
@@ -84,7 +84,7 @@ void Application::run(int argc, char* argv[], unsigned ver_major, unsigned ver_m
       // clear buffer
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       // draw geometry
-      application->render();
+      application->render(window);
       // swap draw buffer to front
       glfwSwapBuffers(window);
       // display fps

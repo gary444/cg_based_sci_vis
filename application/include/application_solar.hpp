@@ -21,7 +21,7 @@ class ApplicationSolar : public Application {
   void resizeCallback(unsigned width, unsigned height);
 
   // draw all objects
-  void render() const;
+  void render(GLFWwindow* window) const;
 
  protected:
   void initializeShaderPrograms();
