@@ -9,7 +9,7 @@
 
 // forward declarations
 class Application;
-struct window_handler GLFWwindow;
+// struct window_handler GLFWwindow;
 
 namespace window_handler { 
   // create window and set callbacks
